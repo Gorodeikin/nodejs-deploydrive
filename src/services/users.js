@@ -4,7 +4,7 @@ import { Story } from '../models/story.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
 export async function getPublicUsers({ page, perPage }) {
-  const q = User.find().select('-password');
+  const q = User.find().select('-password -email');
   const [count, users] = await Promise.all([
     User.countDocuments(),
     q
@@ -16,7 +16,7 @@ export async function getPublicUsers({ page, perPage }) {
 }
 
 export async function getPublicUserById(userId, { page, perPage }) {
-  const user = await User.findById(userId).select('-password').lean();
+  const user = await User.findById(userId).select('-password -email').lean();
   if (!user) throw createHttpError(404, 'User not found');
 
   const storiesQ = Story.find({ ownerId: userId }).sort({ createdAt: -1 });
