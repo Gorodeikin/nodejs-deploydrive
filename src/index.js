@@ -13,4 +13,7 @@ async function bootstrap() {
   });
 }
 
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Не вдалося запустити сервер:', error.message);
+  process.exit(1);
+});
