@@ -262,14 +262,86 @@ paths:
         '201':
           description: Створено
 
-  /api/stories/{storiesId}:
+  /api/stories/{storyId}:
+    get:
+      operationId: getStoryById
+      tags: [Stories]
+      summary: Отримати одну історію за ID
+      security: []
+      parameters:
+        - in: path
+          name: storyId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Історію успішно знайдено
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: 'Successfully found story!'
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: '68498236a100312bea079004'
+                      img:
+                        type: string
+                        example: 'https://ftp.goit.study/img/travel-blog/68498236a100312bea079004.webp'
+                      title:
+                        type: string
+                      article:
+                        type: string
+                      category:
+                        type: string
+                        example: '68fb50c80ae91338641121f2'
+                      categoryName:
+                        type: string
+                        example: 'Європа'
+                      ownerId:
+                        type: string
+                      date:
+                        type: string
+                        format: date-time
+                      favoriteCount:
+                        type: integer
+                        example: 0
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+        '404':
+          description: Історію не знайдено
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: 'Story not found'
+
     patch:
       operationId: updateStory
       tags: [Stories]
       summary: Оновити історію
       parameters:
         - in: path
-          name: storiesId
+          name: storyId
           required: true
           schema:
             type: string

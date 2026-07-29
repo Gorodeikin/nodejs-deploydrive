@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import createHttpError from 'http-errors';
 import { Story } from '../models/story.js';
 import { Category } from '../models/category.js';
@@ -34,6 +35,25 @@ export async function getStories({ page, perPage, category }) {
   return {
     data: itemsWithCategoryName,
     ...calculatePaginationData(count, perPage, page),
+  };
+}
+
+export async function getStoryById(storyId) {
+  if (!mongoose.isValidObjectId(storyId)) {
+    throw createHttpError(404, 'Story not found');
+  }
+
+  const story = await Story.findById(storyId).lean();
+
+  if (!story) throw createHttpError(404, 'Story not found');
+
+  const category = await Category.findById(story.category)
+    .select('name')
+    .lean();
+
+  return {
+    ...story,
+    categoryName: category ? category.name : 'Unknown',
   };
 }
 

@@ -9,6 +9,7 @@ import {
   createStoryController,
   updateStoryController,
   getPopularStoriesController,
+  getStoryByIdController,
 } from '../controllers/stories.js';
 
 export const storiesRouter = Router();
@@ -16,6 +17,8 @@ export const storiesRouter = Router();
 storiesRouter.get('/', listStoriesController);
 
 storiesRouter.get('/popular', getPopularStoriesController);
+
+storiesRouter.get('/:storyId', getStoryByIdController);
 
 storiesRouter.post(
   '/',

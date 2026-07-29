@@ -1,5 +1,6 @@
 import {
   getStories,
+  getStoryById,
   createStory,
   updateStory,
   getPopularStories,
@@ -25,6 +26,11 @@ export async function getPopularStoriesController(req, res) {
     message: 'Successfully found popular stories!',
     data,
   });
+}
+
+export async function getStoryByIdController(req, res) {
+  const data = await getStoryById(req.params.storyId);
+  res.json({ status: 200, message: 'Successfully found story!', data });
 }
 
 export async function createStoryController(req, res, next) {
