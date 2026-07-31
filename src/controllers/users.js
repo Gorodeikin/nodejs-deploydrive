@@ -5,6 +5,7 @@ import {
   updateMe,
   addSavedStory,
   removeSavedStory,
+  getSavedStories,
 } from '../services/users.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { uploadToCloudinary } from '../utils/cloudinary.js';
@@ -54,6 +55,12 @@ export async function addSavedController(req, res) {
 export async function removeSavedController(req, res) {
   const data = await removeSavedStory(req.user._id, req.params.storyId);
   res.json({ status: 200, message: 'Story removed!', data });
+}
+
+export async function getSavedStoriesController(req, res) {
+  const { page, perPage } = parsePaginationParams(req.query);
+  const data = await getSavedStories(req.user._id, { page, perPage });
+  res.json({ status: 200, message: 'Successfully found saved stories!', data });
 }
 
 export async function getUserByIdStory(req, res) {

@@ -14,6 +14,7 @@ import {
   updateAvatarController,
   addSavedController,
   removeSavedController,
+  getSavedStoriesController,
   getUserByIdStory,
 } from '../controllers/users.js';
 
@@ -39,6 +40,7 @@ usersRouter.patch(
 );
 
 // saved stories
+usersRouter.get('/me/saved', authenticate, getSavedStoriesController);
 usersRouter.post('/me/saved/:storyId', authenticate, addSavedController);
 usersRouter.delete('/me/saved/:storyId', authenticate, removeSavedController);
 

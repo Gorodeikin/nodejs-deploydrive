@@ -74,3 +74,27 @@ export async function removeSavedStory(userId, storyId) {
   if (!updated) throw createHttpError(404, 'User not found');
   return updated;
 }
+
+export async function getSavedStories(userId, { page, perPage }) {
+  const user = await User.findById(userId).select('savedStories').lean();
+  if (!user) throw createHttpError(404, 'User not found');
+
+  const savedStoryIds = (user.savedStories || []).map(id => id.toString());
+  const latestFirstIds = [...savedStoryIds].reverse();
+
+  const stories = await Story.find({ _id: { $in: latestFirstIds } }).lean();
+  const storyById = new Map(stories.map(story => [story._id.toString(), story]));
+
+  const allExistingSavedStories = latestFirstIds
+    .map(id => storyById.get(id))
+    .filter(Boolean);
+
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+  const pageStories = allExistingSavedStories.slice(start, end);
+
+  return {
+    data: pageStories,
+    ...calculatePaginationData(allExistingSavedStories.length, perPage, page),
+  };
+}

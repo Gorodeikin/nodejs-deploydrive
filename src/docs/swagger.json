@@ -310,7 +310,104 @@
         }
       }
     },
-    "/api/users/me/saved/{travellerId}": {
+    "/api/users/me/saved": {
+      "get": {
+        "operationId": "getSavedStories",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Отримати збережені історії поточного користувача",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список збережених історій",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "perPage": {
+                          "type": "integer"
+                        },
+                        "totalItems": {
+                          "type": "integer"
+                        },
+                        "totalPages": {
+                          "type": "integer"
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean"
+                        },
+                        "hasNextPage": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "empty": {
+                    "summary": "Немає збережених історій",
+                    "value": {
+                      "status": 200,
+                      "message": "Successfully found saved stories!",
+                      "data": {
+                        "data": [],
+                        "page": 1,
+                        "perPage": 10,
+                        "totalItems": 0,
+                        "totalPages": 1,
+                        "hasPreviousPage": false,
+                        "hasNextPage": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me/saved/{storyId}": {
       "post": {
         "operationId": "addStoryToSaved",
         "tags": [
@@ -320,7 +417,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "travellerId",
+            "name": "storyId",
             "required": true,
             "schema": {
               "type": "string"
@@ -342,7 +439,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "travellerId",
+            "name": "storyId",
             "required": true,
             "schema": {
               "type": "string"
